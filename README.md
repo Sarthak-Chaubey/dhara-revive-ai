@@ -13,14 +13,14 @@
 
 ## 👥 Inventors & Research Team (LPU)
 
-| S.No. | Inventor Name | UID / Reg. No. | Role / Domain | Contact |
-| :---: | :--- | :---: | :--- | :--- |
-| **1** | **Sarthak Chaubey** | `12312896` | **Lead Inventor** & System Architect | sarthakchaubey07@gmail.com |
-| **2** | **Akash Singh** | `12313520` | **Co-Inventor** & Hydro-GIS Developer | akashrathour1512@gmail.com |
-| **3** | **Harsh Khestika** | `12317850` | **Co-Inventor** & Algorithm Engineer | hkhestika@gmail.com |
-| **4** | **Ayush Tiwari** | `12319892` | **Co-Inventor** & Data Pipeline Engineer | ayushtiwaribr45@gmail.com |
-| **5** | **Shivendra Kumar** | `12315959` | **Co-Inventor** & UI/UX Developer | shivendrak305@gmail.com |
-| **6** | **Vivek Kumar** | `12324962` | **Co-Inventor** & Model Evaluation Lead | vivekkumar.ch06@gmail.com |
+| S.No. | Inventor Name | UID / Reg. No. | Role / Domain | GitHub | Contact Email |
+| :---: | :--- | :---: | :--- | :--- | :--- |
+| **1** | **Sarthak Chaubey** | `12312896` | **Lead Inventor** & System Architect | [@Sarthak-Chaubey](https://github.com/Sarthak-Chaubey) | sarthakchaubey07@gmail.com |
+| **2** | **Akash Singh** | `12313520` | **Co-Inventor** & Hydro-GIS Developer | [@Akash-singh15](https://github.com/Akash-singh15) | akashrathour1512@gmail.com |
+| **3** | **Harsh Khestika** | `12317850` | **Co-Inventor** & Algorithm Engineer | [@Harshkhestika](https://github.com/Harshkhestika) | hkhestika@gmail.com |
+| **4** | **Ayush Tiwari** | `12319892` | **Co-Inventor** & Data Pipeline Engineer | [@AyushTiwari0102](https://github.com/AyushTiwari0102) | ayushtiwaribr45@gmail.com |
+| **5** | **Shivendra Kumar** | `12315959` | **Co-Inventor** & UI/UX Developer | [@Shivendra-Kumar21](https://github.com/Shivendra-Kumar21) | shivendrak305@gmail.com |
+| **6** | **Vivek Kumar** | `12324962` | **Co-Inventor** & Model Evaluation Lead | [@vivek8630](https://github.com/vivek8630) | vivekkumar.ch06@gmail.com |
 
 ---
 
