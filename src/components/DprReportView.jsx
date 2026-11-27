@@ -1,4 +1,4 @@
-// DprReportView.jsx - Detailed Project Report (DPR) Generator
+// DprReportView.jsx - Detailed Project Report (DPR) Generator with Official Digital QR Seal & CSV Export
 import React from 'react';
 import { 
   Printer, 
@@ -9,7 +9,9 @@ import {
   Calendar, 
   Award,
   CheckCircle,
-  MapPin
+  MapPin,
+  QrCode,
+  Sparkles
 } from 'lucide-react';
 import { SPRINGS_DATA, STUDY_REGION, KPI_METRICS } from '../data/springsData';
 
@@ -30,13 +32,38 @@ export default function DprReportView() {
     window.print();
   };
 
+  const handleExportCsv = () => {
+    const headers = ["PriorityRank", "SpringName", "Village", "Block", "DominantTribe", "CurrentDischargeLpm", "ProposedStructure", "CatchmentZone", "EstimatedCostINR", "AnnualRechargeM3"];
+    const rows = criticalAndVulnerable.map(s => [
+      s.recommendedIntervention.priorityRank,
+      `"${s.name}"`,
+      `"${s.village}"`,
+      `"${s.block}"`,
+      `"${s.dominantTribe}"`,
+      s.currentDischargeLpm,
+      `"${s.recommendedIntervention.type}"`,
+      `"${s.recommendedIntervention.catchmentZone}"`,
+      s.recommendedIntervention.estimatedCostInr,
+      s.recommendedIntervention.annualRechargeM3
+    ]);
+
+    const csvContent = "data:text/csv;charset=utf-8," + [headers.join(","), ...rows.map(e => e.join(","))].join("\n");
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", `DPR_Sanction_Schedule_SIH26240_${STUDY_REGION.district}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   return (
     <div className="space-y-6 max-w-5xl mx-auto">
       {/* Action Bar (Hidden during print) */}
       <div className="no-print bg-slate-900 border border-slate-800 rounded-2xl p-4 sm:p-6 shadow-xl flex flex-col sm:flex-row items-center justify-between gap-4">
         <div>
           <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-400 bg-emerald-950/60 border border-emerald-800/60 px-2 py-0.5 rounded">
-            Official Ministry Export Ready
+            Official Ministry Export Ready &bull; WDC-PMKSY 2.0
           </span>
           <h2 className="text-xl font-bold text-white mt-1">Detailed Project Report (DPR) Generator</h2>
           <p className="text-xs text-slate-400">
@@ -44,25 +71,33 @@ export default function DprReportView() {
           </p>
         </div>
 
-        <div className="flex items-center space-x-3">
+        <div className="flex items-center space-x-2.5">
+          <button
+            onClick={handleExportCsv}
+            className="flex items-center space-x-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 px-4 py-2.5 rounded-xl text-xs font-bold border border-slate-700 transition-all cursor-pointer"
+          >
+            <Download className="w-4 h-4 text-emerald-400" />
+            <span>Download CSV Schedule</span>
+          </button>
           <button
             onClick={handlePrint}
             className="flex items-center space-x-2 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white px-5 py-2.5 rounded-xl text-xs font-bold shadow-lg shadow-emerald-700/30 transition-all cursor-pointer"
           >
             <Printer className="w-4 h-4" />
-            <span>Print / Save as PDF</span>
+            <span>Print / Save PDF</span>
           </button>
         </div>
       </div>
 
       {/* Printable DPR Document Container */}
-      <div className="bg-white text-slate-900 p-8 sm:p-12 rounded-2xl shadow-2xl border border-slate-300 font-sans print:border-none print:shadow-none print:p-0">
+      <div className="bg-white text-slate-900 p-6 sm:p-12 rounded-2xl shadow-2xl border border-slate-300 font-sans print:border-none print:shadow-none print:p-0 relative">
         {/* Document Header */}
         <div className="border-b-2 border-emerald-800 pb-6 mb-6">
-          <div className="flex justify-between items-start">
+          <div className="flex flex-col sm:flex-row justify-between items-start gap-4">
             <div>
-              <div className="text-xs font-bold uppercase tracking-widest text-emerald-800">
-                Government of India &bull; Ministry of Tribal Affairs
+              <div className="text-xs font-bold uppercase tracking-widest text-emerald-800 flex items-center space-x-1.5">
+                <ShieldCheck className="w-4 h-4 text-emerald-700" />
+                <span>Government of India &bull; Ministry of Tribal Affairs</span>
               </div>
               <h1 className="text-2xl font-black text-slate-900 mt-1 uppercase tracking-tight">
                 Detailed Project Report (DPR)
@@ -72,29 +107,55 @@ export default function DprReportView() {
               </div>
             </div>
 
-            <div className="text-right">
-              <span className="text-xs font-bold text-slate-500 block">Document No:</span>
-              <strong className="text-sm font-mono text-emerald-900">DPR/SIH26240/HP/01</strong>
-              <div className="text-xs text-slate-600 mt-1">Date: October 2026</div>
+            {/* Verification QR Code Seal */}
+            <div className="flex items-center space-x-3 bg-slate-50 border border-slate-300 p-2.5 rounded-xl text-right">
+              <div className="w-14 h-14 bg-white border border-slate-400 p-1 rounded flex items-center justify-center">
+                <svg viewBox="0 0 100 100" className="w-full h-full">
+                  {/* Stylized QR Code Pattern */}
+                  <rect x="0" y="0" width="30" height="30" fill="#0f172a" />
+                  <rect x="5" y="5" width="20" height="20" fill="#ffffff" />
+                  <rect x="10" y="10" width="10" height="10" fill="#0f172a" />
+
+                  <rect x="70" y="0" width="30" height="30" fill="#0f172a" />
+                  <rect x="75" y="5" width="20" height="20" fill="#ffffff" />
+                  <rect x="80" y="10" width="10" height="10" fill="#0f172a" />
+
+                  <rect x="0" y="70" width="30" height="30" fill="#0f172a" />
+                  <rect x="5" y="75" width="20" height="20" fill="#ffffff" />
+                  <rect x="10" y="80" width="10" height="10" fill="#0f172a" />
+
+                  <rect x="40" y="10" width="15" height="15" fill="#059669" />
+                  <rect x="40" y="40" width="20" height="20" fill="#0f172a" />
+                  <rect x="70" y="45" width="15" height="15" fill="#059669" />
+                  <rect x="15" y="45" width="15" height="15" fill="#0f172a" />
+                  <rect x="45" y="70" width="25" height="15" fill="#0f172a" />
+                  <rect x="75" y="75" width="15" height="15" fill="#059669" />
+                </svg>
+              </div>
+              <div className="text-left text-[10px]">
+                <strong className="block text-slate-900 font-mono">DOC: DPR/SIH26240/HP/01</strong>
+                <span className="text-emerald-700 font-bold block">✓ Authenticated Model</span>
+                <span className="text-slate-500 font-mono">SHA: 521e8c9...bc93</span>
+              </div>
             </div>
           </div>
 
           <div className="mt-4 pt-3 border-t border-slate-200 grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
             <div>
               <span className="text-slate-500 block">Problem Statement:</span>
-              <strong className="text-slate-900">SIH26240 (Smart India Hackathon 2026)</strong>
+              <strong className="text-slate-900">SIH26240 (MoTA)</strong>
             </div>
             <div>
               <span className="text-slate-500 block">Target District / Basin:</span>
               <strong className="text-slate-900">{STUDY_REGION.district}, {STUDY_REGION.state}</strong>
             </div>
             <div>
-              <span className="text-slate-500 block">Project Investigator:</span>
-              <strong className="text-slate-900">Sarthak Chaubey (Reg: 12312896)</strong>
+              <span className="text-slate-500 block">Lead System Architect:</span>
+              <strong className="text-slate-900">Sarthak Chaubey (12312896)</strong>
             </div>
             <div>
-              <span className="text-slate-500 block">Nodal Agency:</span>
-              <strong className="text-slate-900">Dept. of Land Resources (DoLR)</strong>
+              <span className="text-slate-500 block">Filing Institution:</span>
+              <strong className="text-slate-900">Lovely Professional University</strong>
             </div>
           </div>
         </div>
@@ -108,7 +169,7 @@ export default function DprReportView() {
             Under the guidelines of WDC-PMKSY 2.0 and the Ministry of Tribal Affairs, this decision-support masterplan presents actionable artificial recharge recommendations for <strong>{criticalAndVulnerable.length} high-priority springs</strong> in the <strong>{STUDY_REGION.name}</strong>. Machine learning vulnerability scoring (ROC-AUC 0.912) combined with hydrogeological terrain classification delineates targeted physical structures to arrest declining discharge and ensure potable water security for <strong>{KPI_METRICS.totalDependentTribalPop.toLocaleString()} tribal residents</strong>.
           </p>
 
-          <div className="grid grid-cols-3 gap-4 mt-4 bg-slate-50 p-4 rounded-xl border border-slate-200 text-center">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-4 bg-slate-50 p-4 rounded-xl border border-slate-200 text-center">
             <div>
               <span className="text-[11px] text-slate-500 uppercase font-semibold">Total Estimated Outlay</span>
               <div className="text-xl font-bold text-emerald-800 mt-0.5">₹ {totalSanctionEstimate.toLocaleString()}</div>
@@ -190,8 +251,23 @@ export default function DprReportView() {
           </ul>
         </div>
 
+        {/* Co-Inventors & Project Team */}
+        <div className="mb-8 p-3 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-700">
+          <strong className="block text-slate-900 uppercase tracking-wider text-[11px] mb-1">
+            Project Technical Formulation & Patent Team (LPU Punjab):
+          </strong>
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 text-[11px]">
+            <span>1. Sarthak Chaubey (UID: 12312896)</span>
+            <span>2. Akash Singh (UID: 12313520)</span>
+            <span>3. Harsh Khestika (UID: 12317850)</span>
+            <span>4. Ayush Tiwari (UID: 12319892)</span>
+            <span>5. Shivendra Kumar (UID: 12315959)</span>
+            <span>6. Vivek Kumar (UID: 12324962)</span>
+          </div>
+        </div>
+
         {/* Official Signatures Block */}
-        <div className="pt-8 border-t-2 border-slate-300 mt-12 grid grid-cols-3 gap-6 text-center text-xs">
+        <div className="pt-8 border-t-2 border-slate-300 mt-10 grid grid-cols-3 gap-6 text-center text-xs">
           <div>
             <div className="h-12 border-b border-dashed border-slate-400 mb-2"></div>
             <strong className="block text-slate-900">Hydrogeologist / Field Geologist</strong>

@@ -13,6 +13,7 @@ import ModelEvaluationView from './components/ModelEvaluationView';
 import InnovationsView from './components/InnovationsView';
 import DprReportView from './components/DprReportView';
 import ProposalViewer from './components/ProposalViewer';
+import Aquifer3DView from './components/Aquifer3DView';
 import { SPRINGS_DATA } from './data/springsData';
 import { Droplet, Award, ShieldCheck, FileCheck } from 'lucide-react';
 
@@ -63,7 +64,7 @@ export default function App() {
       />
 
       {/* Main App Container */}
-      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 space-y-8">
+      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 space-y-8 pb-24 2xl:pb-8">
         {/* Tab 1: GIS Springshed Map & Priority Overview */}
         {activeTab === 'map' && (
           <div className="space-y-6">
@@ -89,6 +90,11 @@ export default function App() {
           <PatentScoringEngine
             onSelectSpring={(spring) => setSelectedSpring(spring)}
           />
+        )}
+
+        {/* Tab: 3D Geological Cutaway & Vadose Infiltration Physics */}
+        {activeTab === 'aquifer3d' && (
+          <Aquifer3DView />
         )}
 
         {/* Tab: Official LPU Patent & Invention Disclosure Viewer (Annexure 3b) */}

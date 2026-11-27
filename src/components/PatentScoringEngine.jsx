@@ -27,6 +27,7 @@ import {
   PATENT_METADATA 
 } from '../data/patentData';
 import { SPRINGS_DATA } from '../data/springsData';
+import VoiceSurveyAssistant from './VoiceSurveyAssistant';
 
 export default function PatentScoringEngine({ onSelectSpring }) {
   // State for user-adjustable expert weights (FIG. 1, Item 50)
@@ -239,6 +240,22 @@ export default function PatentScoringEngine({ onSelectSpring }) {
           </div>
         )}
       </div>
+
+      {/* Multilingual Voice-Enabled Field Surveyor (Web Speech API) */}
+      <VoiceSurveyAssistant 
+        onApplyVoiceValues={(detected) => {
+          // If user speaks weight-related slope or rainfall adjustments
+          if (detected.slope !== undefined) {
+            setWeights(prev => ({ ...prev, slope: Math.min(0.4, Math.max(0.05, detected.slope / 100)) }));
+          }
+          if (detected.rainfallDeficit !== undefined) {
+            setWeights(prev => ({ ...prev, rainfall: Math.min(0.4, Math.max(0.05, detected.rainfallDeficit / 100)) }));
+          }
+          if (detected.forestLoss !== undefined) {
+            setWeights(prev => ({ ...prev, forestLoss: Math.min(0.4, Math.max(0.05, detected.forestLoss / 100)) }));
+          }
+        }}
+      />
 
       {/* USER-ADJUSTABLE WEIGHT CONTROLS (FIG. 1, Item 50 & FIG. 2) */}
       <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl space-y-4">
